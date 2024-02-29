@@ -194,4 +194,23 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
       throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
     }
   }
+
+  @Override
+  public JSONArray getPublishedCards() {
+    SortQuery<String> sortQuery = SortQueryBuilder.sort("bpm-form-schemas")
+        .get("*->alias")
+        .get("*->name")
+        .where("type").is("card")
+        .where("published").is("true")
+        .build();
+    List<FormSchema> cards = redisTemplate.sort(sortQuery);
+    JSONArray result = new JSONArray();
+    cards.forEach(card -> {
+      JSONObject cardInfo = new JSONObject();
+      cardInfo.put("alias", card.getAlias());
+      cardInfo.put("name", card.getId()); // Assuming 'name' should be the name of the form, replace with the correct field if necessary
+      result.add(cardInfo);
+    });
+    return result;
+  }
 }
