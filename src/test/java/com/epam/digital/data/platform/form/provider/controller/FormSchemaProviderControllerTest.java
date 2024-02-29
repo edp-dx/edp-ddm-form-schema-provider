@@ -97,4 +97,14 @@ class FormSchemaProviderControllerTest {
         .andExpectAll(
             status().isNoContent());
   }
+
+  @Test
+  void shouldProvideListOfPublishedCards() throws Exception {
+    List<JSONObject> mockCards = /* create a mock list of published cards */;
+    when(formSchemaProviderService.getPublishedCards()).thenReturn(mockCards);
+
+    mockMvc.perform(get(BASE_URL + "/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().json(/* the expected JSON string */));
+  }
 }
