@@ -65,4 +65,12 @@ public class FormSchemaProviderController {
     formSchemaProviderServiceImpl.deleteFormByKey(key);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
+
+  @GetMapping("/cards")
+  public ResponseEntity<JSONArray> getPublishedCards() {
+    JSONArray cards = formSchemaProviderServiceImpl.getPublishedCards();
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(cards);
+  }
 }
