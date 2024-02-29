@@ -194,4 +194,17 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
       throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
     }
   }
+
+  @Override
+  public List<JSONObject> listCards() {
+    return StreamSupport.stream(formRepository.findAll().spliterator(), false)
+        .filter(formSchema -> formSchema.getFormData().contains("\"card\":true"))
+        .map(formSchema -> {
+          JSONObject json = new JSONObject();
+          json.put("id", formSchema.getId());
+          json.put("name", formSchema.getName()); // assuming the name field exists
+          return json;
+        })
+        .collect(Collectors.toList());
+  }
 }
