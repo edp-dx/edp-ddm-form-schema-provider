@@ -65,4 +65,12 @@ public class FormSchemaProviderController {
     formSchemaProviderServiceImpl.deleteFormByKey(key);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
+
+  @GetMapping("/cards")
+  public ResponseEntity<List<JSONObject>> listCards() {
+    List<JSONObject> cards = formSchemaProviderServiceImpl.listCards();
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(cards);
+  }
 }
