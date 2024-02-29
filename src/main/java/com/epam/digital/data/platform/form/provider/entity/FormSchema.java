@@ -30,4 +30,48 @@ public class FormSchema {
   @Id
   private String id;
   private String formData;
+  private String alias;
+  private boolean published;
+  private String type;
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getFormData() {
+    return formData;
+  }
+
+  public void setFormData(String formData) {
+    this.formData = formData;
+  }
+
+  public String getAlias() {
+    return alias;
+  }
+
+  public void setAlias(String alias) {
+    this.alias = alias;
+  }
+
+  public boolean isPublished() {
+    return published;
+  }
+
+  public void setPublished(boolean published) {
+    this.published = published;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+}
 }
