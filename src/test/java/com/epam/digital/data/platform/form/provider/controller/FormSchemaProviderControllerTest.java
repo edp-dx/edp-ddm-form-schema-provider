@@ -97,4 +97,18 @@ class FormSchemaProviderControllerTest {
         .andExpectAll(
             status().isNoContent());
   }
+
+  @Test
+  @SneakyThrows
+  void listCards() {
+    List<JSONObject> cards = List.of(/* mock data */);
+    when(formSchemaProviderService.listCards()).thenReturn(cards);
+
+    mockMvc.perform(get(BASE_URL + "/cards"))
+        .andExpectAll(
+            status().isOk(),
+            content().contentType(MediaType.APPLICATION_JSON),
+            content().json(/* expected JSON output */)
+        );
+  }
 }
