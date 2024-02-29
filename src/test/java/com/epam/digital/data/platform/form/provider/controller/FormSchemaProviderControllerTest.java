@@ -97,4 +97,23 @@ class FormSchemaProviderControllerTest {
         .andExpectAll(
             status().isNoContent());
   }
+
+  @Test
+  @SneakyThrows
+  void getPublishedCards() {
+    JSONArray sampleCards = new JSONArray();
+    JSONObject card1 = new JSONObject();
+    card1.put("alias", "card-1-alias");
+    card1.put("name", "Card 1 Name");
+    sampleCards.add(card1);
+
+    when(formSchemaProviderService.getPublishedCards()).thenReturn(sampleCards);
+
+    mockMvc.perform(get(BASE_URL + "/cards"))
+        .andExpectAll(
+            status().isOk(),
+            content().contentType(MediaType.APPLICATION_JSON),
+            content().json(sampleCards.toJSONString())
+        );
+  }
 }
