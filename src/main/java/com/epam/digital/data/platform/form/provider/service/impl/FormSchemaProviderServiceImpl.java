@@ -187,7 +187,14 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     }
   }
 
-  protected <T> T execute(Supplier<T> supplier) {
+  // method to get active cards
+public List<FormSchema> getActiveCards() {
+    return getAllForms().stream()
+        .filter(formSchema -> "card".equals(formSchema.getType()) && formSchema.isVisibleInUi())
+        .collect(Collectors.toList());
+}
+
+protected <T> T execute(Supplier<T> supplier) {
     try {
       return supplier.get();
     } catch (Exception e) {
