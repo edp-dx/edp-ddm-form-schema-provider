@@ -60,7 +60,16 @@ public class FormSchemaProviderController {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
-  @DeleteMapping("/{key}")
+  @GetMapping("/cards/active")
+  public ResponseEntity<List<FormSchema>> getActiveCards() {
+    List<FormSchema> activeCards = formSchemaProviderServiceImpl.getActiveCards()
+        .stream()
+        .filter(formSchema -> "card".equals(formSchema.getType()) && formSchema.isVisibleInUi())
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(activeCards);
+  }
+
+@DeleteMapping("/{key}")
   public ResponseEntity<Void> deleteFormByKey(@PathVariable("key") String key) {
     formSchemaProviderServiceImpl.deleteFormByKey(key);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
