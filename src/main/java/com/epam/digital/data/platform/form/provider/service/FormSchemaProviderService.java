@@ -29,4 +29,5 @@ public interface FormSchemaProviderService {
 
   void deleteFormByKey(String key);
 
+  JSONArray getPublishedCards();
 }
