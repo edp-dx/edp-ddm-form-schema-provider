@@ -30,4 +30,23 @@ public class FormSchema {
   @Id
   private String id;
   private String formData;
+private String type; // Type of the schema (form or card)
+private boolean visibleInUi; // Indicates if the card is visible in UI
+
+// Getters and setters for 'type' and 'visibleInUi'
+public String getType() {
+  return type;
+}
+
+public void setType(String type) {
+  this.type = type;
+}
+
+public boolean isVisibleInUi() {
+  return visibleInUi;
+}
+
+public void setVisibleInUi(boolean visibleInUi) {
+  this.visibleInUi = visibleInUi;
+}
 }
