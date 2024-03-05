@@ -68,7 +68,59 @@ class FormSchemaProviderServiceTest {
   void init() {
     this.formSchemaProviderService =
         new FormSchemaProviderServiceImpl(formSchemaValidationService, repository, objectMapper);
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void validSaveForm() throws JsonProcessingException {
@@ -81,7 +133,59 @@ class FormSchemaProviderServiceTest {
     assertThat(captor.getValue().getId()).isEqualTo("citizen-shared-officer-sign-app");
     assertThat(objectMapper.readTree(captor.getValue().getFormData()))
         .isEqualTo(objectMapper.readTree(TestUtils.getContent("valid-form.json")));
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void saveShouldThrowFormSchemaValidationExceptionWhenFormEmpty() {
@@ -97,7 +201,59 @@ class FormSchemaProviderServiceTest {
     assertThat(exception.getMessage()).isEqualTo("Form Schema is not valid.");
     assertThat(exception.getValidationErrors()).isEqualTo(errors);
     verify(repository, never()).save(any());
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void saveShouldThrowFormDataRepositoryCommunicationException() {
@@ -108,10 +264,114 @@ class FormSchemaProviderServiceTest {
         () -> formSchemaProviderService.saveForm(form));
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
 
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
+
   @ParameterizedTest
-  @ValueSource(strings = {"valid-form.json", "valid-form-with-special-characters.json"})
+  @ValueSource(strings = {"valid-form.json", "valid-form-with-special-characters.json"import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
+  }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+})
   void validGetFormByKey(String filePath) {
     var form = (JSONObject) JSONValue.parse(TestUtils.getContent(filePath));
     String formName = form.getAsString("name");
@@ -122,7 +382,59 @@ class FormSchemaProviderServiceTest {
     JSONObject formByKey = formSchemaProviderService.getFormByKey(formName);
 
     assertEquals(form, formByKey);
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void getFormByKeyShouldThrowNoFormDataException() {
@@ -134,7 +446,59 @@ class FormSchemaProviderServiceTest {
 
     assertThat(exception.getMessage()).isEqualTo(
         String.format("The UI form scheme for the specified key '%s' is missing.", key));
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void getFormByKeyShouldThrowFormDataRepositoryCommunicationException() {
@@ -144,7 +508,59 @@ class FormSchemaProviderServiceTest {
         () -> formSchemaProviderService.getFormByKey("KEY"));
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void validUpdateForm() throws JsonProcessingException {
@@ -158,7 +574,59 @@ class FormSchemaProviderServiceTest {
     assertThat(captor.getValue().getId()).isEqualTo("citizen-shared-officer-sign-app");
     assertThat(objectMapper.readTree(captor.getValue().getFormData()))
             .isEqualTo(objectMapper.readTree(TestUtils.getContent("valid-form.json")));
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void updateFormShouldThrowNoFormDataException() {
@@ -170,7 +638,59 @@ class FormSchemaProviderServiceTest {
 
     assertThat(exception.getMessage()).isEqualTo(
         String.format("The UI form scheme for the specified key '%s' is missing.", formName));
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void updateFormShouldThrowFormSchemaValidationExceptionWhenKeysDifferent() {
@@ -184,7 +704,59 @@ class FormSchemaProviderServiceTest {
     assertThat(exception.getMessage()).isEqualTo(
         "The 'key: another-name' from request must be equal to the "
             + "'name: citizen-shared-officer-sign-app' from the form data.");
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
 
   @Test
@@ -198,7 +770,59 @@ class FormSchemaProviderServiceTest {
 
     assertThat(exception.getMessage()).isEqualTo(
         "The UI form scheme for the specified key 'citizen-shared-officer-sign-app' is already exist.");
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void validDeleteFormByKey() {
@@ -206,7 +830,59 @@ class FormSchemaProviderServiceTest {
     formSchemaProviderService.deleteFormByKey(key);
 
     verify(repository).deleteById(key);
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
   }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
 
   @Test
   void deleteFormByKeyShouldThrowFormDataRepositoryCommunicationException() {
@@ -216,5 +892,109 @@ class FormSchemaProviderServiceTest {
         () -> formSchemaProviderService.deleteFormByKey("KEY"));
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
+  }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
+  }
+}
+import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderServiceTest {
+
+  @Mock
+  private FormRepository formRepository;
+
+  @Mock
+  private Authentication authentication;
+
+  @InjectMocks
+  private FormSchemaProviderServiceImpl formSchemaProviderService;
+
+  @BeforeEach
+  void setUp() {
+    when(authentication.getAuthorities()).thenReturn(AuthorityUtils.createAuthorityList("ROLE_USER"));
+  }
+
+  @Test
+  void whenGetVisibleCardsForUser_thenSuccess() {
+    FormSchema formSchema = new FormSchema();
+    formSchema.setType(FormSchema.FormType.CARD);
+    formSchema.setShowCardOnUi(true);
+    formSchema.setRoles(Collections.singletonList("ROLE_USER"));
+    
+    when(formRepository.findFormSchemasByTypeAndShowCardOnUi(any(FormSchema.FormType.class), any(Boolean.class)))
+      .thenReturn(Collections.singletonList(formSchema));
+      
+    List<FormSchema> result = formSchemaProviderService.getVisibleCardsForUser(authentication);
+    
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0)).isEqualTo(formSchema);
   }
 }
