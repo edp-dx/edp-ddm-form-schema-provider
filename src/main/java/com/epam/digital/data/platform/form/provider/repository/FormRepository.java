@@ -24,4 +24,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FormRepository extends KeyValueRepository<FormSchema, String> {
 
+  List<FormSchema> findByTypeAndShowCardOnUi(FormSchema.Type type, boolean showCardOnUi);
+
 }
