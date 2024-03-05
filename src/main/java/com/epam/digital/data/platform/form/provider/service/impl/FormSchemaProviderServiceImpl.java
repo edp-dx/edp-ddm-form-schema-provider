@@ -57,7 +57,16 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     this.formSchemaValidationService = formSchemaValidationService;
     this.repository = repository;
     this.objectMapper = objectMapper;
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
 
   @Override
   public void saveForm(String formSchemaData) {
@@ -70,25 +79,97 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     var formName = formSchemaJson.get(NAME).asText();
     validateFormExisting(formName, this::checkForSaveIsFormExists);
 
-    log.debug("Saving form with name: {}", formName);
-    saveOrUpdate(formName, formSchemaJson);
+    log.debug("Saving form with name: {public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}", formName);
+    saveOrUpdate(formName, formSchemaJson);
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
 
   private JsonNode getFormJson(String formSchemaData) {
     try {
       return objectMapper.readTree(formSchemaData);
-    } catch (Exception e) {
-      throw new FormSchemaDataException("Error while json parsing", e);
-    }
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+} catch (Exception e) {
+      throw new FormSchemaDataException("Error while json parsing", e);
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
 
   private String serializeFormJson(JsonNode formSchemaJson) {
     try {
       return objectMapper.writeValueAsString(formSchemaJson);
-    } catch (Exception e) {
-      throw new FormSchemaDataException("Error while json serializing", e);
-    }
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+} catch (Exception e) {
+      throw new FormSchemaDataException("Error while json serializing", e);
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
 
 
   private void saveOrUpdate(String formSchemaName, JsonNode formSchemaJson) {
@@ -96,7 +177,16 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
         .id(formSchemaName)
         .formData(serializeFormJson(formSchemaJson))
         .build()));
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
 
   private void validateFormExisting(String formName,
                                       BiConsumer<Boolean, String> performIfFormExist) {
@@ -104,7 +194,16 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     boolean isExists = isExistsByKey(formName);
 
     performIfFormExist.accept(isExists, formName);
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
 
   private void validateFormSchema(String formSchemaData) {
     Map<String, ValidationError> validationErrors = formSchemaValidationService.validate(
@@ -113,8 +212,26 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     if (!validationErrors.isEmpty()) {
       validationErrors.values().forEach(validationError -> log.error(validationError.toString()));
       throw new FormSchemaValidationException("Form Schema is not valid.", validationErrors);
-    }
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
 
   @Override
   public JSONObject getFormByKey(String key) {
@@ -128,7 +245,16 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
         StandardCharsets.UTF_8);
 
     return JSONValue.parse(formSchemaData, JSONObject.class);
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
 
   @Override
   public void updateForm(String key, String formSchemaData) {
@@ -149,18 +275,54 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
               .path(NAME)
               .massage(errorMessage)
               .build()));
-    }
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
 
     validateFormExisting(formSchemaName, this::checkForUpdateIsFromExists);
     saveOrUpdate(formSchemaName, formSchemaJson);
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
 
   private void checkForUpdateIsFromExists(boolean isExists, String key) {
     if (!isExists) {
       throw new FormSchemaDataException(
           String.format("The UI form scheme for the specified key '%s' is missing.", key));
-    }
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
 
   private void checkForSaveIsFormExists(boolean isExists, String schemaFormKey) {
     if (isExists) {
@@ -170,28 +332,118 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
           Map.of(NAME, ValidationError.builder().path(NAME)
               .massage("The 'name' must be unique per Project.")
               .build()));
-    }
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
 
   private boolean isExistsByKey(String key) {
     return execute(() -> repository.existsById(key));
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+}
 
   @Override
   public void deleteFormByKey(String key) {
     try {
       var lowercaseKey = key.toLowerCase();
       repository.deleteById(lowercaseKey);
-    } catch (Exception e) {
-      throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
-    }
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
+} catch (Exception e) {
+      throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
 
   protected <T> T execute(Supplier<T> supplier) {
     try {
       return supplier.get();
-    } catch (Exception e) {
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+} catch (Exception e) {
       throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
-    }
+    public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
+  public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
+  }
+}
+public List<FormSchema> findAllVisibleCards(Authentication authentication) {
+    List<String> userRoles = authentication.getAuthorities().stream()
+                           .map(GrantedAuthority::getAuthority)
+                           .collect(Collectors.toList());
+
+    return repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true).stream()
+                     .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+                     .collect(Collectors.toList());
   }
 }
