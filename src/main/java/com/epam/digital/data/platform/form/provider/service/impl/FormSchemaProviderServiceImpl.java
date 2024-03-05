@@ -28,8 +28,41 @@ import com.epam.digital.data.platform.form.provider.service.FormSchemaValidation
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
+import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+@Slf4j
+@Service
+public class FormSchemaProviderServiceImpl implements FormSchemaProviderService {
+
+  private final FormRepository formRepository;
+
+  @Autowired
+  public FormSchemaProviderServiceImpl(FormRepository formRepository) {
+    this.formRepository = formRepository;
+  }
+
+  @Override
+  public List<FormSchema> getVisibleCardsForUser(Authentication authentication) {
+    List<FormSchema> visibleCards = formRepository.findFormSchemasByTypeAndShowCardOnUi(FormSchema.FormType.CARD, true);
+    List<String> userRoles = authentication.getAuthorities().stream()
+                                           .map(grantedAuthority -> grantedAuthority.getAuthority())
+                                           .collect(Collectors.toList());
+    return visibleCards.stream()
+                       .filter(formSchema -> formSchema.getRoles().stream().anyMatch(userRoles::contains))
+                       .collect(Collectors.toList());
+  }
+
+  // ... other existing methods ...
+}
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
