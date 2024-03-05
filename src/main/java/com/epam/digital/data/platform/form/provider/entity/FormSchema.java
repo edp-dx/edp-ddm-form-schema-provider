@@ -30,4 +30,38 @@ public class FormSchema {
   @Id
   private String id;
   private String formData;
+
+  public enum FormType {
+    FORM,
+    CARD
+  }
+  
+  private FormType type;
+  private boolean showCardOnUi;
+  private List<String> roles;
+
+  // getters and setters for new fields
+  public FormType getType() {
+    return type;
+  }
+
+  public void setType(FormType type) {
+    this.type = type;
+  }
+
+  public boolean isShowCardOnUi() {
+    return showCardOnUi;
+  }
+
+  public void setShowCardOnUi(boolean showCardOnUi) {
+    this.showCardOnUi = showCardOnUi;
+  }
+
+  public List<String> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(List<String> roles) {
+    this.roles = roles;
+  }
 }
