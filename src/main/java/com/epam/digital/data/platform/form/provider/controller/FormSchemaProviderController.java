@@ -38,31 +38,166 @@ public class FormSchemaProviderController {
 
   public FormSchemaProviderController(FormSchemaProviderServiceImpl formSchemaProviderServiceImpl) {
     this.formSchemaProviderServiceImpl = formSchemaProviderServiceImpl;
-  }
+  @GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
+
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
+}
 
   @PostMapping
   public ResponseEntity<Void> saveForm(@RequestBody String formData) {
     formSchemaProviderServiceImpl.saveForm(formData);
     return ResponseEntity.status(HttpStatus.CREATED).build();
-  }
+  @GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
 
-  @GetMapping("/{key}")
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
+}
+
+  @GetMapping("/{key@GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
+
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
+}")
   public ResponseEntity<JSONObject> getForm(@PathVariable("key") String key) {
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_JSON)
         .body(formSchemaProviderServiceImpl.getFormByKey(key));
-  }
+  @GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
 
-  @PutMapping("/{key}")
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
+}
+
+  @PutMapping("/{key@GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
+
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
+}")
   public ResponseEntity<Void> updateForm(@PathVariable("key") String key,
       @RequestBody String formSchemaData) {
     formSchemaProviderServiceImpl.updateForm(key, formSchemaData);
     return ResponseEntity.status(HttpStatus.OK).build();
-  }
+  @GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
 
-  @DeleteMapping("/{key}")
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
+}
+
+  @DeleteMapping("/{key@GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
+
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
+}")
   public ResponseEntity<Void> deleteFormByKey(@PathVariable("key") String key) {
     formSchemaProviderServiceImpl.deleteFormByKey(key);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
+  @GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
+
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
+}
+@GetMapping("/api/cards")
+public ResponseEntity<List<JSONObject>> getAllVisibleCards() {
+  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  List<JSONObject> cards = formSchemaProviderServiceImpl.findAllVisibleCards(authentication)
+                                  .stream()
+                                  .map(this::convertToJson)
+                                  .collect(Collectors.toList());
+  return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(cards);
+}
+
+private JSONObject convertToJson(FormSchema formSchema) {
+  return JSONValue.parse(formSchema.getFormData(), JSONObject.class);
+}
 }
