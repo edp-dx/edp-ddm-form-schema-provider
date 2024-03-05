@@ -68,7 +68,28 @@ class FormSchemaProviderServiceTest {
   void init() {
     this.formSchemaProviderService =
         new FormSchemaProviderServiceImpl(formSchemaValidationService, repository, objectMapper);
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void validSaveForm() throws JsonProcessingException {
@@ -81,7 +102,28 @@ class FormSchemaProviderServiceTest {
     assertThat(captor.getValue().getId()).isEqualTo("citizen-shared-officer-sign-app");
     assertThat(objectMapper.readTree(captor.getValue().getFormData()))
         .isEqualTo(objectMapper.readTree(TestUtils.getContent("valid-form.json")));
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void saveShouldThrowFormSchemaValidationExceptionWhenFormEmpty() {
@@ -97,7 +139,28 @@ class FormSchemaProviderServiceTest {
     assertThat(exception.getMessage()).isEqualTo("Form Schema is not valid.");
     assertThat(exception.getValidationErrors()).isEqualTo(errors);
     verify(repository, never()).save(any());
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void saveShouldThrowFormDataRepositoryCommunicationException() {
@@ -108,10 +171,52 @@ class FormSchemaProviderServiceTest {
         () -> formSchemaProviderService.saveForm(form));
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @ParameterizedTest
-  @ValueSource(strings = {"valid-form.json", "valid-form-with-special-characters.json"})
+  @ValueSource(strings = {"valid-form.json", "valid-form-with-special-characters.json"@Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+})
   void validGetFormByKey(String filePath) {
     var form = (JSONObject) JSONValue.parse(TestUtils.getContent(filePath));
     String formName = form.getAsString("name");
@@ -122,7 +227,28 @@ class FormSchemaProviderServiceTest {
     JSONObject formByKey = formSchemaProviderService.getFormByKey(formName);
 
     assertEquals(form, formByKey);
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void getFormByKeyShouldThrowNoFormDataException() {
@@ -134,7 +260,28 @@ class FormSchemaProviderServiceTest {
 
     assertThat(exception.getMessage()).isEqualTo(
         String.format("The UI form scheme for the specified key '%s' is missing.", key));
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void getFormByKeyShouldThrowFormDataRepositoryCommunicationException() {
@@ -144,7 +291,28 @@ class FormSchemaProviderServiceTest {
         () -> formSchemaProviderService.getFormByKey("KEY"));
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void validUpdateForm() throws JsonProcessingException {
@@ -158,7 +326,28 @@ class FormSchemaProviderServiceTest {
     assertThat(captor.getValue().getId()).isEqualTo("citizen-shared-officer-sign-app");
     assertThat(objectMapper.readTree(captor.getValue().getFormData()))
             .isEqualTo(objectMapper.readTree(TestUtils.getContent("valid-form.json")));
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void updateFormShouldThrowNoFormDataException() {
@@ -170,7 +359,28 @@ class FormSchemaProviderServiceTest {
 
     assertThat(exception.getMessage()).isEqualTo(
         String.format("The UI form scheme for the specified key '%s' is missing.", formName));
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void updateFormShouldThrowFormSchemaValidationExceptionWhenKeysDifferent() {
@@ -184,7 +394,28 @@ class FormSchemaProviderServiceTest {
     assertThat(exception.getMessage()).isEqualTo(
         "The 'key: another-name' from request must be equal to the "
             + "'name: citizen-shared-officer-sign-app' from the form data.");
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
 
   @Test
@@ -198,7 +429,28 @@ class FormSchemaProviderServiceTest {
 
     assertThat(exception.getMessage()).isEqualTo(
         "The UI form scheme for the specified key 'citizen-shared-officer-sign-app' is already exist.");
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void validDeleteFormByKey() {
@@ -206,7 +458,28 @@ class FormSchemaProviderServiceTest {
     formSchemaProviderService.deleteFormByKey(key);
 
     verify(repository).deleteById(key);
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
 
   @Test
   void deleteFormByKeyShouldThrowFormDataRepositoryCommunicationException() {
@@ -216,5 +489,47 @@ class FormSchemaProviderServiceTest {
         () -> formSchemaProviderService.deleteFormByKey("KEY"));
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
-  }
+  @Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
+}
+@Test
+void findAllVisibleCardsShouldReturnFilteredResults() {
+  when(repository.findByTypeAndShowCardOnUi(FormSchema.Type.CARD, true))
+      .thenReturn(mockFormSchemas());
+  when(authentication.getAuthorities())
+      .thenReturn(mockAuthorities());
+
+  List<FormSchema> results = formSchemaProviderService.findAllVisibleCards(authentication);
+
+  // Assertions to validate filtered results based on mock data
+}
+
+private List<FormSchema> mockFormSchemas() {
+  // Implement mock FormSchema list creation
+  return null;
+}
+
+private Collection<GrantedAuthority> mockAuthorities() {
+  // Implement mock GrantedAuthority collection creation
+  return null;
+}
 }
