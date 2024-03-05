@@ -30,4 +30,17 @@ public class FormSchema {
   @Id
   private String id;
   private String formData;
+
+  @Indexed
+  private Type type;
+
+  @Indexed
+  private boolean showCardOnUi;
+
+  private List<String> roles;
+
+  public enum Type {
+    FORM,
+    CARD
+  }
 }
