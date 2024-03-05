@@ -59,7 +59,28 @@ class FormSchemaProviderControllerTest {
             .accept(MediaType.APPLICATION_JSON))
         .andExpectAll(
             status().isCreated());
-  }
+  @Test
+@SneakyThrows
+void getAllVisibleCards() {
+  when(formSchemaProviderService.findAllVisibleCards(any(Authentication.class)))
+      .thenReturn(Collections.singletonList(mockFormSchema()));
+
+  mockMvc.perform(get("/api/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().json(expectedJsonCards()));
+}
+
+private FormSchema mockFormSchema() {
+  // Implement mock FormSchema creation
+  return null;
+}
+
+private String expectedJsonCards() {
+  // Implement expected JSON cards representation
+  return "";
+}
+}
 
   @Test
   @SneakyThrows
@@ -68,12 +89,54 @@ class FormSchemaProviderControllerTest {
         StandardCharsets.UTF_8));
     when(formSchemaProviderService.getFormByKey(any())).thenReturn(form);
 
-    mockMvc.perform(get(BASE_URL + "/{key}", form.getAsString("name")))
+    mockMvc.perform(get(BASE_URL + "/{key@Test
+@SneakyThrows
+void getAllVisibleCards() {
+  when(formSchemaProviderService.findAllVisibleCards(any(Authentication.class)))
+      .thenReturn(Collections.singletonList(mockFormSchema()));
+
+  mockMvc.perform(get("/api/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().json(expectedJsonCards()));
+}
+
+private FormSchema mockFormSchema() {
+  // Implement mock FormSchema creation
+  return null;
+}
+
+private String expectedJsonCards() {
+  // Implement expected JSON cards representation
+  return "";
+}
+}", form.getAsString("name")))
         .andExpectAll(
             status().isOk(),
             content().contentType(MediaType.APPLICATION_JSON),
             content().json(form.toJSONString()));
-  }
+  @Test
+@SneakyThrows
+void getAllVisibleCards() {
+  when(formSchemaProviderService.findAllVisibleCards(any(Authentication.class)))
+      .thenReturn(Collections.singletonList(mockFormSchema()));
+
+  mockMvc.perform(get("/api/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().json(expectedJsonCards()));
+}
+
+private FormSchema mockFormSchema() {
+  // Implement mock FormSchema creation
+  return null;
+}
+
+private String expectedJsonCards() {
+  // Implement expected JSON cards representation
+  return "";
+}
+}
 
   @Test
   @SneakyThrows
@@ -82,19 +145,124 @@ class FormSchemaProviderControllerTest {
         StandardCharsets.UTF_8));
     when(formSchemaProviderService.getFormByKey(any())).thenReturn(form);
 
-    mockMvc.perform(put(BASE_URL + "/{key}", form.getAsString("name"))
+    mockMvc.perform(put(BASE_URL + "/{key@Test
+@SneakyThrows
+void getAllVisibleCards() {
+  when(formSchemaProviderService.findAllVisibleCards(any(Authentication.class)))
+      .thenReturn(Collections.singletonList(mockFormSchema()));
+
+  mockMvc.perform(get("/api/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().json(expectedJsonCards()));
+}
+
+private FormSchema mockFormSchema() {
+  // Implement mock FormSchema creation
+  return null;
+}
+
+private String expectedJsonCards() {
+  // Implement expected JSON cards representation
+  return "";
+}
+}", form.getAsString("name"))
             .content(form.toJSONString())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andExpectAll(
             status().isOk());
-  }
+  @Test
+@SneakyThrows
+void getAllVisibleCards() {
+  when(formSchemaProviderService.findAllVisibleCards(any(Authentication.class)))
+      .thenReturn(Collections.singletonList(mockFormSchema()));
+
+  mockMvc.perform(get("/api/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().json(expectedJsonCards()));
+}
+
+private FormSchema mockFormSchema() {
+  // Implement mock FormSchema creation
+  return null;
+}
+
+private String expectedJsonCards() {
+  // Implement expected JSON cards representation
+  return "";
+}
+}
 
   @Test
   @SneakyThrows
   void deleteFormByKey() {
-    mockMvc.perform(delete(BASE_URL + "/{key}", "test-key"))
+    mockMvc.perform(delete(BASE_URL + "/{key@Test
+@SneakyThrows
+void getAllVisibleCards() {
+  when(formSchemaProviderService.findAllVisibleCards(any(Authentication.class)))
+      .thenReturn(Collections.singletonList(mockFormSchema()));
+
+  mockMvc.perform(get("/api/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().json(expectedJsonCards()));
+}
+
+private FormSchema mockFormSchema() {
+  // Implement mock FormSchema creation
+  return null;
+}
+
+private String expectedJsonCards() {
+  // Implement expected JSON cards representation
+  return "";
+}
+}", "test-key"))
         .andExpectAll(
             status().isNoContent());
-  }
+  @Test
+@SneakyThrows
+void getAllVisibleCards() {
+  when(formSchemaProviderService.findAllVisibleCards(any(Authentication.class)))
+      .thenReturn(Collections.singletonList(mockFormSchema()));
+
+  mockMvc.perform(get("/api/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().json(expectedJsonCards()));
+}
+
+private FormSchema mockFormSchema() {
+  // Implement mock FormSchema creation
+  return null;
+}
+
+private String expectedJsonCards() {
+  // Implement expected JSON cards representation
+  return "";
+}
+}
+@Test
+@SneakyThrows
+void getAllVisibleCards() {
+  when(formSchemaProviderService.findAllVisibleCards(any(Authentication.class)))
+      .thenReturn(Collections.singletonList(mockFormSchema()));
+
+  mockMvc.perform(get("/api/cards"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().json(expectedJsonCards()));
+}
+
+private FormSchema mockFormSchema() {
+  // Implement mock FormSchema creation
+  return null;
+}
+
+private String expectedJsonCards() {
+  // Implement expected JSON cards representation
+  return "";
+}
 }
