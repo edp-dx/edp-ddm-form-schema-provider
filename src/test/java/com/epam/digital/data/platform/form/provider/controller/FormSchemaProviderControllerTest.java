@@ -59,7 +59,56 @@ class FormSchemaProviderControllerTest {
             .accept(MediaType.APPLICATION_JSON))
         .andExpectAll(
             status().isCreated());
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderControllerTest {
+
+  @Mock
+  private FormSchemaProviderService formSchemaProviderService;
+
+  @InjectMocks
+  private FormSchemaProviderController formSchemaProviderController;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(formSchemaProviderController).build();
   }
+
+  @Test
+  void whenGetVisibleCards_thenReturnStatusOk() throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = Arrays.asList(new FormSchema(), new FormSchema());
+    when(formSchemaProviderService.getVisibleCardsForUser(authentication)).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+}
 
   @Test
   @SneakyThrows
@@ -68,12 +117,110 @@ class FormSchemaProviderControllerTest {
         StandardCharsets.UTF_8));
     when(formSchemaProviderService.getFormByKey(any())).thenReturn(form);
 
-    mockMvc.perform(get(BASE_URL + "/{key}", form.getAsString("name")))
+    mockMvc.perform(get(BASE_URL + "/{keyimport com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderControllerTest {
+
+  @Mock
+  private FormSchemaProviderService formSchemaProviderService;
+
+  @InjectMocks
+  private FormSchemaProviderController formSchemaProviderController;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(formSchemaProviderController).build();
+  }
+
+  @Test
+  void whenGetVisibleCards_thenReturnStatusOk() throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = Arrays.asList(new FormSchema(), new FormSchema());
+    when(formSchemaProviderService.getVisibleCardsForUser(authentication)).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+}", form.getAsString("name")))
         .andExpectAll(
             status().isOk(),
             content().contentType(MediaType.APPLICATION_JSON),
             content().json(form.toJSONString()));
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderControllerTest {
+
+  @Mock
+  private FormSchemaProviderService formSchemaProviderService;
+
+  @InjectMocks
+  private FormSchemaProviderController formSchemaProviderController;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(formSchemaProviderController).build();
   }
+
+  @Test
+  void whenGetVisibleCards_thenReturnStatusOk() throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = Arrays.asList(new FormSchema(), new FormSchema());
+    when(formSchemaProviderService.getVisibleCardsForUser(authentication)).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+}
 
   @Test
   @SneakyThrows
@@ -82,19 +229,264 @@ class FormSchemaProviderControllerTest {
         StandardCharsets.UTF_8));
     when(formSchemaProviderService.getFormByKey(any())).thenReturn(form);
 
-    mockMvc.perform(put(BASE_URL + "/{key}", form.getAsString("name"))
+    mockMvc.perform(put(BASE_URL + "/{keyimport com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderControllerTest {
+
+  @Mock
+  private FormSchemaProviderService formSchemaProviderService;
+
+  @InjectMocks
+  private FormSchemaProviderController formSchemaProviderController;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(formSchemaProviderController).build();
+  }
+
+  @Test
+  void whenGetVisibleCards_thenReturnStatusOk() throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = Arrays.asList(new FormSchema(), new FormSchema());
+    when(formSchemaProviderService.getVisibleCardsForUser(authentication)).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+}", form.getAsString("name"))
             .content(form.toJSONString())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andExpectAll(
             status().isOk());
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderControllerTest {
+
+  @Mock
+  private FormSchemaProviderService formSchemaProviderService;
+
+  @InjectMocks
+  private FormSchemaProviderController formSchemaProviderController;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(formSchemaProviderController).build();
   }
+
+  @Test
+  void whenGetVisibleCards_thenReturnStatusOk() throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = Arrays.asList(new FormSchema(), new FormSchema());
+    when(formSchemaProviderService.getVisibleCardsForUser(authentication)).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+}
 
   @Test
   @SneakyThrows
   void deleteFormByKey() {
-    mockMvc.perform(delete(BASE_URL + "/{key}", "test-key"))
+    mockMvc.perform(delete(BASE_URL + "/{keyimport com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderControllerTest {
+
+  @Mock
+  private FormSchemaProviderService formSchemaProviderService;
+
+  @InjectMocks
+  private FormSchemaProviderController formSchemaProviderController;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(formSchemaProviderController).build();
+  }
+
+  @Test
+  void whenGetVisibleCards_thenReturnStatusOk() throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = Arrays.asList(new FormSchema(), new FormSchema());
+    when(formSchemaProviderService.getVisibleCardsForUser(authentication)).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+}", "test-key"))
         .andExpectAll(
             status().isNoContent());
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderControllerTest {
+
+  @Mock
+  private FormSchemaProviderService formSchemaProviderService;
+
+  @InjectMocks
+  private FormSchemaProviderController formSchemaProviderController;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(formSchemaProviderController).build();
+  }
+
+  @Test
+  void whenGetVisibleCards_thenReturnStatusOk() throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = Arrays.asList(new FormSchema(), new FormSchema());
+    when(formSchemaProviderService.getVisibleCardsForUser(authentication)).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+}
+import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+class FormSchemaProviderControllerTest {
+
+  @Mock
+  private FormSchemaProviderService formSchemaProviderService;
+
+  @InjectMocks
+  private FormSchemaProviderController formSchemaProviderController;
+
+  private MockMvc mockMvc;
+
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(formSchemaProviderController).build();
+  }
+
+  @Test
+  void whenGetVisibleCards_thenReturnStatusOk() throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = Arrays.asList(new FormSchema(), new FormSchema());
+    when(formSchemaProviderService.getVisibleCardsForUser(authentication)).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
   }
 }
