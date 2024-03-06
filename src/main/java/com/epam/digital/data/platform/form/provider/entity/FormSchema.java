@@ -30,4 +30,18 @@ public class FormSchema {
   @Id
   private String id;
   private String formData;
+
+  @Indexed
+  private FormType type;
+
+  @Indexed
+  private boolean showCardOnUi;
+
+  private List<String> roles;
+
+  public enum FormType {
+    FORM, CARD
+  }
+
+  // Getters and Setters are provided by Lombok @Data
 }
