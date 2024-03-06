@@ -187,6 +187,21 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     }
   }
 
+  @Override
+  public List<JSONObject> getVisibleCardsForCurrentUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<String> userRoles = authentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+
+    List<FormSchema> formSchemas = repository.findFormSchemasByTypeAndShowCardOnUi("card", true);
+    return formSchemas.stream()
+            .filter(formSchema -> !Collections.disjoint(formSchema.getRoles(), userRoles))
+            .map(this::serializeFormJson)
+            .map(JSONValue::parse)
+            .collect(Collectors.toList());
+  }
+
   protected <T> T execute(Supplier<T> supplier) {
     try {
       return supplier.get();
