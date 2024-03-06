@@ -22,6 +22,13 @@ import org.springframework.data.keyvalue.repository.KeyValueRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FormRepository extends KeyValueRepository<FormSchema, String> {
+import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import org.springframework.data.keyvalue.repository.KeyValueRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
+public interface FormRepository extends KeyValueRepository<FormSchema, String> {
+  List<FormSchema> findByTypeAndShowCardOnUi(FormSchema.FormSchemaType type, boolean showCardOnUi);
 }
