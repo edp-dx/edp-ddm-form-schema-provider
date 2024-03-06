@@ -187,7 +187,38 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     }
   }
 
-  protected <T> T execute(Supplier<T> supplier) {
+  import com.epam.digital.data.platform.form.provider.entity.FormSchema.FormSchemaType;
+import com.epam.digital.data.platform.form.provider.repository.FormRepository;
+//... existing imports ...
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import net.minidev.json.JSONObject;
+
+// Rest of the FormSchemaProviderServiceImpl class
+
+  @Autowired
+  private FormRepository formRepository;
+
+  @Override
+  public List<JSONObject> getVisibleCardsForUserRoles(Set<String> userRoles) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Set<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+    return formRepository.findByTypeAndShowCardOnUi(FormSchemaType.CARD, true).stream()
+      .filter(form -> !Collections.disjoint(form.getRoles(), roles))
+      .map(this::convertToJson)
+      .collect(Collectors.toList());
+  }
+
+  private JSONObject convertToJson(FormSchema formSchema) {
+    // method implementation to convert FormSchema to JSONObject
+  }
+
+protected <T> T execute(Supplier<T> supplier) {
     try {
       return supplier.get();
     } catch (Exception e) {
