@@ -194,4 +194,14 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
       throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
     }
   }
+
+  public List<FormSchema> getAllVisibleCardsForUser(Authentication authentication) {
+    List<FormSchema> visibleCards = repository.findAllByTypeAndShowCardOnUi(FormSchema.FormType.CARD, true);
+    List<String> userRoles = authentication.getAuthorities().stream()
+                                     .map(GrantedAuthority::getAuthority)
+                                     .collect(Collectors.toList());
+    return visibleCards.stream()
+                       .filter(card -> card.getRoles().stream().anyMatch(userRoles::contains))
+                       .collect(Collectors.toList());
+  }
 }
