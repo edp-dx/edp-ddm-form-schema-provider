@@ -25,9 +25,29 @@ import org.springframework.data.redis.core.RedisHash;
 @Data
 @Builder
 @RedisHash("bpm-form-schemas")
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+
+import java.util.Set;
+
+@Data
+@Builder
+@RedisHash("bpm-form-schemas")
 public class FormSchema {
 
   @Id
   private String id;
   private String formData;
+  @Indexed
+  private FormSchemaType type;
+  @Indexed
+  private boolean showCardOnUi;
+  private Set<String> roles;
+
+  public enum FormSchemaType {
+    FORM, CARD
+  }
 }
