@@ -30,4 +30,9 @@ public class FormSchema {
   @Id
   private String id;
   private String formData;
+  @Indexed
+  private String type;
+  @Indexed
+  private Boolean showCardOnUi;
+  private List<String> roles;
 }
