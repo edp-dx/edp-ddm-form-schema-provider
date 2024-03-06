@@ -19,6 +19,8 @@ package com.epam.digital.data.platform.form.provider.service;
 
 import net.minidev.json.JSONObject;
 
+import java.util.List;
+
 public interface FormSchemaProviderService {
 
   void saveForm(String formSchemaData);

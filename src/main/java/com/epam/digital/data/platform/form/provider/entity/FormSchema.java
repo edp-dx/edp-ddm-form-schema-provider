@@ -19,7 +19,6 @@ package com.epam.digital.data.platform.form.provider.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Singular;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
@@ -39,7 +38,5 @@ public class FormSchema {
   private String type;
   @Indexed
   private boolean showCardOnUi;
-  @Singular
-  @Builder.Default
   private List<String> roles = new ArrayList<>();
 }
