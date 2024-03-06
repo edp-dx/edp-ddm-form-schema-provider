@@ -19,6 +19,11 @@ package com.epam.digital.data.platform.form.provider.service;
 
 import net.minidev.json.JSONObject;
 
+import net.minidev.json.JSONObject;
+
+import java.util.List;
+import java.util.Set;
+
 public interface FormSchemaProviderService {
 
   void saveForm(String formSchemaData);
@@ -29,4 +34,5 @@ public interface FormSchemaProviderService {
 
   void deleteFormByKey(String key);
 
+  List<JSONObject> getVisibleCardsForUserRoles(Set<String> userRoles);
 }
