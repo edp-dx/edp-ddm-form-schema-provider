@@ -38,31 +38,157 @@ public class FormSchemaProviderController {
 
   public FormSchemaProviderController(FormSchemaProviderServiceImpl formSchemaProviderServiceImpl) {
     this.formSchemaProviderServiceImpl = formSchemaProviderServiceImpl;
+  import org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
   }
+
+// ... rest of the existing class content
+}
 
   @PostMapping
   public ResponseEntity<Void> saveForm(@RequestBody String formData) {
     formSchemaProviderServiceImpl.saveForm(formData);
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  import org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
   }
 
-  @GetMapping("/{key}")
+// ... rest of the existing class content
+}
+
+  @GetMapping("/{keyimport org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
+  }
+
+// ... rest of the existing class content
+}")
   public ResponseEntity<JSONObject> getForm(@PathVariable("key") String key) {
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_JSON)
         .body(formSchemaProviderServiceImpl.getFormByKey(key));
+  import org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
   }
 
-  @PutMapping("/{key}")
+// ... rest of the existing class content
+}
+
+  @PutMapping("/{keyimport org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
+  }
+
+// ... rest of the existing class content
+}")
   public ResponseEntity<Void> updateForm(@PathVariable("key") String key,
       @RequestBody String formSchemaData) {
     formSchemaProviderServiceImpl.updateForm(key, formSchemaData);
     return ResponseEntity.status(HttpStatus.OK).build();
+  import org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
   }
 
-  @DeleteMapping("/{key}")
+// ... rest of the existing class content
+}
+
+  @DeleteMapping("/{keyimport org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
+  }
+
+// ... rest of the existing class content
+}")
   public ResponseEntity<Void> deleteFormByKey(@PathVariable("key") String key) {
     formSchemaProviderServiceImpl.deleteFormByKey(key);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  import org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
   }
+
+// ... rest of the existing class content
+}
+import org.springframework.security.access.prepost.PreAuthorize;
+
+//... existing imports and class definition
+
+  @GetMapping("/cards/visible")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<List<JSONObject>> getVisibleCardsForCurrentUser() {
+    List<JSONObject> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(visibleCards);
+  }
+
+// ... rest of the existing class content
 }
