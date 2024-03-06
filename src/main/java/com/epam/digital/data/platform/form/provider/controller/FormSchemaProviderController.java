@@ -38,31 +38,85 @@ public class FormSchemaProviderController {
 
   public FormSchemaProviderController(FormSchemaProviderServiceImpl formSchemaProviderServiceImpl) {
     this.formSchemaProviderServiceImpl = formSchemaProviderServiceImpl;
+  @GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
   }
+}
 
   @PostMapping
   public ResponseEntity<Void> saveForm(@RequestBody String formData) {
     formSchemaProviderServiceImpl.saveForm(formData);
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  @GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
   }
+}
 
-  @GetMapping("/{key}")
+  @GetMapping("/{key@GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
+  }
+}")
   public ResponseEntity<JSONObject> getForm(@PathVariable("key") String key) {
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_JSON)
         .body(formSchemaProviderServiceImpl.getFormByKey(key));
+  @GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
   }
+}
 
-  @PutMapping("/{key}")
+  @PutMapping("/{key@GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
+  }
+}")
   public ResponseEntity<Void> updateForm(@PathVariable("key") String key,
       @RequestBody String formSchemaData) {
     formSchemaProviderServiceImpl.updateForm(key, formSchemaData);
     return ResponseEntity.status(HttpStatus.OK).build();
+  @GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
   }
+}
 
-  @DeleteMapping("/{key}")
+  @DeleteMapping("/{key@GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
+  }
+}")
   public ResponseEntity<Void> deleteFormByKey(@PathVariable("key") String key) {
     formSchemaProviderServiceImpl.deleteFormByKey(key);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  @GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
+  }
+}
+@GetMapping("/cards/visible")
+  public ResponseEntity<List<FormSchema>> getVisibleCards() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    List<FormSchema> visibleCards = formSchemaProviderServiceImpl.getAllVisibleCardsForUser(authentication);
+    return ResponseEntity.ok().body(visibleCards);
   }
 }
