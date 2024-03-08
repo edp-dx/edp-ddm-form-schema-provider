@@ -17,17 +17,34 @@
 
 package com.epam.digital.data.platform.form.provider.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+
+import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @RedisHash("bpm-form-schemas")
 public class FormSchema {
 
   @Id
   private String id;
   private String formData;
+
+  @Indexed
+  private SchemaType type;
+  @Indexed
+  private boolean showCardOnUi;
+  private List<String> roles;
+
+  public enum SchemaType {
+    FORM, CARD
+  }
 }
