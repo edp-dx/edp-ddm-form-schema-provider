@@ -18,22 +18,23 @@ package com.epam.digital.data.platform.form.provider.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.epam.digital.data.platform.form.provider.model.FormSchema;
 import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 import lombok.SneakyThrows;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import util.TestUtils;
 
@@ -41,6 +42,7 @@ import util.TestUtils;
 class FormSchemaProviderControllerTest {
 
   static final String BASE_URL = "/api/forms";
+  static final String VISIBLE_CARDS_URL = "/api/cards/visible";
 
   @Autowired
   MockMvc mockMvc;
@@ -48,13 +50,18 @@ class FormSchemaProviderControllerTest {
   @MockBean
   FormSchemaProviderServiceImpl formSchemaProviderService;
 
+  private JSONObject validForm;
+
+  @BeforeEach
+  void setUp() {
+    validForm = (JSONObject) JSONValue.parse(TestUtils.getContent("valid-form.json").getBytes(StandardCharsets.UTF_8));
+  }
+
   @Test
   @SneakyThrows
   void saveForm() {
-    var form = (JSONObject) JSONValue.parse(TestUtils.getContent("valid-form.json"));
-
     mockMvc.perform(post(BASE_URL)
-            .content(form.toJSONString())
+            .content(validForm.toJSONString())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andExpectAll(
@@ -64,26 +71,22 @@ class FormSchemaProviderControllerTest {
   @Test
   @SneakyThrows
   void getForm() {
-    var form = (JSONObject) JSONValue.parse(TestUtils.getContent("valid-form.json").getBytes(
-        StandardCharsets.UTF_8));
-    when(formSchemaProviderService.getFormByKey(any())).thenReturn(form);
+    when(formSchemaProviderService.getFormByKey(any())).thenReturn(validForm);
 
-    mockMvc.perform(get(BASE_URL + "/{key}", form.getAsString("name")))
+    mockMvc.perform(get(BASE_URL + "/{key}", validForm.getAsString("name")))
         .andExpectAll(
             status().isOk(),
             content().contentType(MediaType.APPLICATION_JSON),
-            content().json(form.toJSONString()));
+            content().json(validForm.toJSONString()));
   }
 
   @Test
   @SneakyThrows
   void updateForm() {
-    var form = (JSONObject) JSONValue.parse(TestUtils.getContent("valid-form.json").getBytes(
-        StandardCharsets.UTF_8));
-    when(formSchemaProviderService.getFormByKey(any())).thenReturn(form);
+    when(formSchemaProviderService.getFormByKey(any())).thenReturn(validForm);
 
-    mockMvc.perform(put(BASE_URL + "/{key}", form.getAsString("name"))
-            .content(form.toJSONString())
+    mockMvc.perform(put(BASE_URL + "/{key}", validForm.getAsString("name"))
+            .content(validForm.toJSONString())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andExpectAll(
@@ -96,5 +99,35 @@ class FormSchemaProviderControllerTest {
     mockMvc.perform(delete(BASE_URL + "/{key}", "test-key"))
         .andExpectAll(
             status().isNoContent());
+  }
+
+  @Test
+  @WithMockUser(roles = "USER")
+  @SneakyThrows
+  void getVisibleCardsAsUser() {
+    List<FormSchema> visibleForms = Arrays.asList(new FormSchema("userForm1"), new FormSchema("userForm2"));
+    when(formSchemaProviderService.getVisibleCards(any())).thenReturn(visibleForms);
+
+    mockMvc.perform(get(VISIBLE_CARDS_URL))
+        .andExpectAll(
+            status().isOk(),
+            content().contentType(MediaType.APPLICATION_JSON),
+            jsonPath("$[0].name").value("userForm1"),
+            jsonPath("$[1].name").value("userForm2"));
+  }
+
+  @Test
+  @WithMockUser(roles = "ADMIN")
+  @SneakyThrows
+  void getVisibleCardsAsAdmin() {
+    List<FormSchema> visibleForms = Arrays.asList(new FormSchema("adminForm1"), new FormSchema("adminForm2"));
+    when(formSchemaProviderService.getVisibleCards(any())).thenReturn(visibleForms);
+
+    mockMvc.perform(get(VISIBLE_CARDS_URL))
+        .andExpectAll(
+            status().isOk(),
+            content().contentType(MediaType.APPLICATION_JSON),
+            jsonPath("$[0].name").value("adminForm1"),
+            jsonPath("$[1].name").value("adminForm2"));
   }
 }
