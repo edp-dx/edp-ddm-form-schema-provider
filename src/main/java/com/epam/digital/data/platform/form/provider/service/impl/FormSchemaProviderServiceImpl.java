@@ -26,6 +26,8 @@ import com.epam.digital.data.platform.form.provider.repository.FormRepository;
 import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
 import com.epam.digital.data.platform.form.provider.service.FormSchemaValidationService;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -38,6 +40,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -45,6 +50,8 @@ import org.springframework.stereotype.Service;
 public class FormSchemaProviderServiceImpl implements FormSchemaProviderService {
 
   private static final String NAME = "name";
+  private static final String TYPE = "type";
+  private static final String SHOW_CARD_ON_UI = "showCardOnUi";
 
   private final FormSchemaValidationService formSchemaValidationService;
   private final FormRepository repository;
@@ -99,7 +106,7 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
   }
 
   private void validateFormExisting(String formName,
-                                      BiConsumer<Boolean, String> performIfFormExist) {
+                                    BiConsumer<Boolean, String> performIfFormExist) {
 
     boolean isExists = isExistsByKey(formName);
 
@@ -185,6 +192,36 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     } catch (Exception e) {
       throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
     }
+  }
+
+  @Override
+  public List<FormSchema> getVisibleCardsForCurrentUser() {
+    List<FormSchema> formSchemas = execute(() -> repository.findFormSchemasByTypeAndShowCardOnUi(TYPE, true));
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+      log.debug("No authentication information available");
+      return Collections.emptyList();
+    }
+
+    List<String> userRoles = authentication.getAuthorities().stream()
+        .map(GrantedAuthority::getAuthority)
+        .toList();
+
+    return formSchemas.stream()
+        .filter(formSchema -> {
+          JsonNode formSchemaJson = getFormJson(formSchema.getFormData());
+          JsonNode rolesNode = formSchemaJson.path("roles");
+          if (rolesNode.isMissingNode() || !rolesNode.isArray()) {
+            return false;
+          }
+          for (JsonNode roleNode : rolesNode) {
+            if (userRoles.contains(roleNode.asText())) {
+              return true;
+            }
+          }
+          return false;
+        })
+        .toList();
   }
 
   protected <T> T execute(Supplier<T> supplier) {
