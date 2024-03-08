@@ -29,9 +29,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/forms")
+@RequestMapping("/api")
 public class FormSchemaProviderController {
 
   private final FormSchemaProviderServiceImpl formSchemaProviderServiceImpl;
@@ -40,29 +46,43 @@ public class FormSchemaProviderController {
     this.formSchemaProviderServiceImpl = formSchemaProviderServiceImpl;
   }
 
-  @PostMapping
+  @PostMapping("/forms")
   public ResponseEntity<Void> saveForm(@RequestBody String formData) {
     formSchemaProviderServiceImpl.saveForm(formData);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-  @GetMapping("/{key}")
+  @GetMapping("/forms/{key}")
   public ResponseEntity<JSONObject> getForm(@PathVariable("key") String key) {
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_JSON)
         .body(formSchemaProviderServiceImpl.getFormByKey(key));
   }
 
-  @PutMapping("/{key}")
+  @PutMapping("/forms/{key}")
   public ResponseEntity<Void> updateForm(@PathVariable("key") String key,
       @RequestBody String formSchemaData) {
     formSchemaProviderServiceImpl.updateForm(key, formSchemaData);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
-  @DeleteMapping("/{key}")
+  @DeleteMapping("/forms/{key}")
   public ResponseEntity<Void> deleteFormByKey(@PathVariable("key") String key) {
     formSchemaProviderServiceImpl.deleteFormByKey(key);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @GetMapping("/cards/visible")
+  @Operation(summary = "Get all visible cards for the current user",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Successful operation",
+              content = @Content(mediaType = "application/json",
+                  schema = @Schema(implementation = List.class)))
+      })
+  public ResponseEntity<List<String>> getVisibleCardsForCurrentUser() {
+    List<String> visibleCards = formSchemaProviderServiceImpl.getVisibleCardsForCurrentUser();
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(visibleCards);
   }
 }
