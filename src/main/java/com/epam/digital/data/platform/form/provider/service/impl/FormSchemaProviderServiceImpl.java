@@ -26,10 +26,14 @@ import com.epam.digital.data.platform.form.provider.repository.FormRepository;
 import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
 import com.epam.digital.data.platform.form.provider.service.FormSchemaValidationService;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +42,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -45,6 +52,7 @@ import org.springframework.stereotype.Service;
 public class FormSchemaProviderServiceImpl implements FormSchemaProviderService {
 
   private static final String NAME = "name";
+  private static final String ROLE_PREFIX = "ROLE_";
 
   private final FormSchemaValidationService formSchemaValidationService;
   private final FormRepository repository;
@@ -90,7 +98,6 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     }
   }
 
-
   private void saveOrUpdate(String formSchemaName, JsonNode formSchemaJson) {
     execute(() -> repository.save(FormSchema.builder()
         .id(formSchemaName)
@@ -99,7 +106,7 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
   }
 
   private void validateFormExisting(String formName,
-                                      BiConsumer<Boolean, String> performIfFormExist) {
+                                    BiConsumer<Boolean, String> performIfFormExist) {
 
     boolean isExists = isExistsByKey(formName);
 
@@ -185,6 +192,28 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     } catch (Exception e) {
       throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
     }
+  }
+
+  @Override
+  public List<FormSchema> getVisibleCardsForCurrentUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+    List<FormSchema> formSchemas = execute(() -> repository.findFormSchemasByTypeAndShowCardOnUi(true));
+    List<FormSchema> visibleFormSchemas = new ArrayList<>();
+
+    for (FormSchema formSchema : formSchemas) {
+      List<String> formRoles = formSchema.getRoles();
+      for (GrantedAuthority authority : authorities) {
+        String userRole = authority.getAuthority();
+        if (formRoles.contains(userRole.replace(ROLE_PREFIX, ""))) {
+          visibleFormSchemas.add(formSchema);
+          break;
+        }
+      }
+    }
+
+    return visibleFormSchemas;
   }
 
   protected <T> T execute(Supplier<T> supplier) {
