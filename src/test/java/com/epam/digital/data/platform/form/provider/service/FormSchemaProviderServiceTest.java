@@ -8,7 +8,7 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,6 +24,7 @@ import com.epam.digital.data.platform.form.provider.exception.FormSchemaDataExce
 import com.epam.digital.data.platform.form.provider.repository.FormRepository;
 import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,6 +40,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import util.TestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,6 +55,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class FormSchemaProviderServiceTest {
@@ -216,5 +222,49 @@ class FormSchemaProviderServiceTest {
         () -> formSchemaProviderService.deleteFormByKey("KEY"));
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
+  }
+
+  @Test
+  void getVisibleCardsForCurrentUserShouldReturnCorrectlyFilteredForms() {
+    SecurityContext securityContext = mock(SecurityContext.class);
+    Authentication authentication = mock(Authentication.class);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(authentication.getAuthorities()).thenReturn(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+    SecurityContextHolder.setContext(securityContext);
+
+    List<FormSchema> allForms = List.of(
+        new FormSchema("form1", null, true, "ROLE_USER"),
+        new FormSchema("form2", null, true, "ROLE_ADMIN"),
+        new FormSchema("form3", null, false, "ROLE_USER")
+    );
+    when(repository.findFormSchemasByTypeAndShowCardOnUi(true)).thenReturn(allForms);
+
+    List<FormSchema> visibleForms = formSchemaProviderService.getVisibleCardsForCurrentUser();
+
+    assertThat(visibleForms).hasSize(1);
+    assertThat(visibleForms.get(0).getId()).isEqualTo("form1");
+
+    SecurityContextHolder.clearContext();
+  }
+
+  @Test
+  void getVisibleCardsForCurrentUserWithNoRolesShouldReturnEmptyList() {
+    SecurityContext securityContext = mock(SecurityContext.class);
+    Authentication authentication = mock(Authentication.class);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(authentication.getAuthorities()).thenReturn(Collections.emptyList());
+    SecurityContextHolder.setContext(securityContext);
+
+    List<FormSchema> allForms = List.of(
+        new FormSchema("form1", null, true, "ROLE_USER"),
+        new FormSchema("form2", null, true, "ROLE_ADMIN")
+    );
+    when(repository.findFormSchemasByTypeAndShowCardOnUi(true)).thenReturn(allForms);
+
+    List<FormSchema> visibleForms = formSchemaProviderService.getVisibleCardsForCurrentUser();
+
+    assertThat(visibleForms).isEmpty();
+
+    SecurityContextHolder.clearContext();
   }
 }
