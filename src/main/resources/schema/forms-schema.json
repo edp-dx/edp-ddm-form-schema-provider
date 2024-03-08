@@ -5,7 +5,8 @@
     "type": {
       "type": "string",
       "enum": [
-        "form"
+        "form",
+        "card"
       ]
     },
     "display": {
@@ -21,10 +22,19 @@
     "title": {
       "type": "string",
       "minLength": 1
+    },
+    "showCardOnUi": {
+      "type": "boolean"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "additionalProperties": true,
   "required": [
-    "name", "title", "display"
+    "name", "title", "display", "type"
   ]
 }
