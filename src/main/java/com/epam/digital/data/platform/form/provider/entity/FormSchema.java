@@ -20,14 +20,33 @@ package com.epam.digital.data.platform.form.provider.entity;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.keyvalue.annotation.KeySpace;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Document
+@KeySpace("formSchema")
 @Data
 @Builder
-@RedisHash("bpm-form-schemas")
 public class FormSchema {
 
-  @Id
-  private String id;
-  private String formData;
+    @Id
+    private String id;
+
+    @Indexed
+    private FormType type; // Assuming FormType is an enum with 'FORM' and 'CARD'
+    
+    @Indexed
+    private boolean showCardOnUi;
+
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+    // Enum for FormType
+    public enum FormType {
+        FORM, CARD
+    }
 }
