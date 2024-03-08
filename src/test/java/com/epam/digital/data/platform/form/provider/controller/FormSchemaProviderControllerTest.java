@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import lombok.SneakyThrows;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
@@ -96,5 +97,19 @@ class FormSchemaProviderControllerTest {
     mockMvc.perform(delete(BASE_URL + "/{key}", "test-key"))
         .andExpectAll(
             status().isNoContent());
+  }
+
+  @Test
+  @SneakyThrows
+  void getVisibleCardsForCurrentUser() {
+    List<String> visibleCards = List.of("Card1", "Card2", "Card3");
+    when(formSchemaProviderService.getVisibleCardsForCurrentUser()).thenReturn(visibleCards);
+
+    mockMvc.perform(get("/api/cards/visible")
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpectAll(
+            status().isOk(),
+            content().contentType(MediaType.APPLICATION_JSON),
+            content().json(JSONValue.toJSONString(visibleCards)));
   }
 }
