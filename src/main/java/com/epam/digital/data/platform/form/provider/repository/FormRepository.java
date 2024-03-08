@@ -18,10 +18,13 @@
 package com.epam.digital.data.platform.form.provider.repository;
 
 import com.epam.digital.data.platform.form.provider.entity.FormSchema;
+import com.epam.digital.data.platform.form.provider.entity.FormType;
 import org.springframework.data.keyvalue.repository.KeyValueRepository;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 public interface FormRepository extends KeyValueRepository<FormSchema, String> {
 
+    List<FormSchema> findFormSchemasByTypeAndShowCardOnUi(FormType type, Boolean showCardOnUi);
 }
