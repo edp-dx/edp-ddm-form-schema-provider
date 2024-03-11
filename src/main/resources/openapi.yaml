@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info:
+  title: Card Visibility API
+  version: "1.0"
+paths:
+  /api/cards/visible:
+    get:
+      summary: Get visible cards for the current user
+      description: Returns a list of cards that are visible to the currently authenticated user based on their roles.
+      operationId: getVisibleCardsForCurrentUser
+      responses:
+        '200':
+          description: A list of visible cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormSchema'
+        '401':
+          description: Unauthorized - User not authenticated
+        '403':
+          description: Forbidden - User does not have permissions to view cards
+components:
+  schemas:
+    FormSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        type:
+          type: string
+          enum: [form, card]
+        showCardOnUi:
+          type: boolean
+        roles:
+          type: array
+          items:
+            type: string
