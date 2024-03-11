@@ -19,8 +19,13 @@ package com.epam.digital.data.platform.form.provider.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -30,4 +35,23 @@ public class FormSchema {
   @Id
   private String id;
   private String formData;
+
+  @Indexed
+  @Getter
+  @Setter
+  private FormType type;
+
+  @Indexed
+  @Getter
+  @Setter
+  private boolean showCardOnUi;
+
+  @Getter
+  @Setter
+  private List<String> roles;
+
+  public enum FormType {
+    FORM,
+    CARD
+  }
 }
