@@ -26,10 +26,12 @@ import com.epam.digital.data.platform.form.provider.repository.FormRepository;
 import com.epam.digital.data.platform.form.provider.service.FormSchemaProviderService;
 import com.epam.digital.data.platform.form.provider.service.FormSchemaValidationService;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +40,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -45,6 +49,7 @@ import org.springframework.stereotype.Service;
 public class FormSchemaProviderServiceImpl implements FormSchemaProviderService {
 
   private static final String NAME = "name";
+  private static final String ROLE_PREFIX = "ROLE_";
 
   private final FormSchemaValidationService formSchemaValidationService;
   private final FormRepository repository;
@@ -89,7 +94,6 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
       throw new FormSchemaDataException("Error while json serializing", e);
     }
   }
-
 
   private void saveOrUpdate(String formSchemaName, JsonNode formSchemaJson) {
     execute(() -> repository.save(FormSchema.builder()
@@ -193,5 +197,20 @@ public class FormSchemaProviderServiceImpl implements FormSchemaProviderService 
     } catch (Exception e) {
       throw new FormDataRepositoryCommunicationException("Error during storage invocation", e);
     }
+  }
+
+  // New method for role-based filtering
+  public List<JSONObject> getFormsForUserRoles(boolean showOnUI) {
+    List<String> userRoles = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+        .stream()
+        .map(GrantedAuthority::getAuthority)
+        .filter(role -> role.startsWith(ROLE_PREFIX))
+        .collect(Collectors.toList());
+
+    return execute(() -> repository.findByFormTypeAndShowOnUI(userRoles, showOnUI))
+        .stream()
+        .map(formSchema -> JSONValue.parse(new String(formSchema.getFormData().getBytes(StandardCharsets.UTF_8),
+            StandardCharsets.UTF_8), JSONObject.class))
+        .collect(Collectors.toList());
   }
 }

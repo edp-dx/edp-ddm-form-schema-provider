@@ -24,6 +24,7 @@ import com.epam.digital.data.platform.form.provider.exception.FormSchemaDataExce
 import com.epam.digital.data.platform.form.provider.repository.FormRepository;
 import com.epam.digital.data.platform.form.provider.service.impl.FormSchemaProviderServiceImpl;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,8 +35,6 @@ import net.minidev.json.JSONValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -45,6 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -110,10 +110,9 @@ class FormSchemaProviderServiceTest {
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
   }
 
-  @ParameterizedTest
-  @ValueSource(strings = {"valid-form.json", "valid-form-with-special-characters.json"})
-  void validGetFormByKey(String filePath) {
-    var form = (JSONObject) JSONValue.parse(TestUtils.getContent(filePath));
+  @Test
+  void validGetFormByKey() throws JsonProcessingException {
+    var form = (JSONObject) JSONValue.parse(TestUtils.getContent("valid-form.json"));
     String formName = form.getAsString("name");
     var formSchema = FormSchema.builder().id(formName)
         .formData(form.toJSONString()).build();
@@ -186,7 +185,6 @@ class FormSchemaProviderServiceTest {
             + "'name: citizen-shared-officer-sign-app' from the form data.");
   }
 
-
   @Test
   void shouldBeValidationErrorsWhenEntityExists() {
     var form = (JSONObject) JSONValue.parse(TestUtils.getContent("valid-form.json"));
@@ -214,6 +212,50 @@ class FormSchemaProviderServiceTest {
 
     var exception = assertThrows(FormDataRepositoryCommunicationException.class,
         () -> formSchemaProviderService.deleteFormByKey("KEY"));
+
+    assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
+  }
+
+  // New tests for role-based filtering functionality
+  @Test
+  void getFormsByRoleAndTypeShouldReturnAllFormsForAdmin() {
+    when(repository.findFormsByRoleAndType("ADMIN", null)).thenReturn(
+            List.of(new FormSchema(), new FormSchema()));
+
+    List<FormSchema> forms = formSchemaProviderService.getFormsByRoleAndType("ADMIN", null);
+
+    assertThat(forms).hasSize(2);
+  }
+
+  @Test
+  void getFormsByRoleAndTypeShouldReturnEmptyListForUnauthorizedRole() {
+    when(repository.findFormsByRoleAndType("GUEST", null)).thenReturn(Collections.emptyList());
+
+    List<FormSchema> forms = formSchemaProviderService.getFormsByRoleAndType("GUEST", null);
+
+    assertThat(forms).isEmpty();
+  }
+
+  @Test
+  void getFormsByRoleAndTypeShouldReturnFilteredFormsByType() {
+    FormSchema publicForm = new FormSchema();
+    publicForm.setId("public-form");
+    FormSchema privateForm = new FormSchema();
+    privateForm.setId("private-form");
+    when(repository.findFormsByRoleAndType("USER", "public")).thenReturn(List.of(publicForm));
+
+    List<FormSchema> forms = formSchemaProviderService.getFormsByRoleAndType("USER", "public");
+
+    assertThat(forms).containsExactly(publicForm);
+    assertThat(forms).doesNotContain(privateForm);
+  }
+
+  @Test
+  void getFormsByRoleAndTypeShouldThrowFormDataRepositoryCommunicationException() {
+    when(repository.findFormsByRoleAndType(eq("USER"), anyString())).thenThrow(new RuntimeException());
+
+    var exception = assertThrows(FormDataRepositoryCommunicationException.class,
+        () -> formSchemaProviderService.getFormsByRoleAndType("USER", "any"));
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
   }

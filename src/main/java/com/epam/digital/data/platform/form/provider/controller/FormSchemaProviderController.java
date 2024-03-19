@@ -21,14 +21,9 @@ import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/forms")
@@ -53,9 +48,18 @@ public class FormSchemaProviderController {
         .body(formSchemaProviderServiceImpl.getFormByKey(key));
   }
 
+  @GetMapping("/available-cards")
+  public ResponseEntity<List<JSONObject>> getFormsByRoleAndType(@RequestParam("role") String role,
+                                                                @RequestParam("type") String type) {
+    List<JSONObject> forms = formSchemaProviderServiceImpl.getFormsByRoleAndType(role, type);
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(forms);
+  }
+
   @PutMapping("/{key}")
   public ResponseEntity<Void> updateForm(@PathVariable("key") String key,
-      @RequestBody String formSchemaData) {
+                                         @RequestBody String formSchemaData) {
     formSchemaProviderServiceImpl.updateForm(key, formSchemaData);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
