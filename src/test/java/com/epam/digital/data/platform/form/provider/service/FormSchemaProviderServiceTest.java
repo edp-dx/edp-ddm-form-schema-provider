@@ -217,4 +217,63 @@ class FormSchemaProviderServiceTest {
 
     assertThat(exception.getMessage()).isEqualTo("Error during storage invocation");
   }
+
+  // New tests for role-based filtering
+
+  @Test
+  void getFormByKeyShouldReturnFormForAuthorizedRole() {
+    var key = "authorized-role-form";
+    var role = "AUTHORIZED_ROLE";
+    var unauthorizedRole = "UNAUTHORIZED_ROLE";
+    var formSchema = TestUtils.createFormSchemaWithRoles(key, role);
+    when(repository.findByIdAndRoles(key, role)).thenReturn(Optional.of(formSchema));
+    
+    JSONObject formByKey = formSchemaProviderService.getFormByKeyAndRoles(key, role);
+    
+    assertEquals(formSchema.getFormData(), formByKey.toJSONString());
+    verify(repository).findByIdAndRoles(key, role);
+    verify(repository, never()).findByIdAndRoles(key, unauthorizedRole);
+  }
+
+  @Test
+  void getFormByKeyShouldNotReturnFormForUnauthorizedRole() {
+    var key = "authorized-role-form";
+    var role = "AUTHORIZED_ROLE";
+    var unauthorizedRole = "UNAUTHORIZED_ROLE";
+    when(repository.findByIdAndRoles(key, unauthorizedRole)).thenReturn(Optional.empty());
+    
+    assertThrows(FormSchemaDataException.class, 
+        () -> formSchemaProviderService.getFormByKeyAndRoles(key, unauthorizedRole));
+    
+    verify(repository).findByIdAndRoles(key, unauthorizedRole);
+    verify(repository, never()).findByIdAndRoles(key, role);
+  }
+
+  @Test
+  void getFormByKeyShouldReturnFormForMultipleAuthorizedRoles() {
+    var key = "multi-role-form";
+    var roles = new String[]{"ROLE_ONE", "ROLE_TWO"};
+    var formSchema = TestUtils.createFormSchemaWithRoles(key, roles);
+    when(repository.findByIdAndRolesIn(key, roles)).thenReturn(Optional.of(formSchema));
+    
+    JSONObject formByKey = formSchemaProviderService.getFormByKeyAndRoles(key, roles);
+    
+    assertEquals(formSchema.getFormData(), formByKey.toJSONString());
+    verify(repository).findByIdAndRolesIn(key, roles);
+  }
+
+  @Test
+  void getFormByKeyShouldNotReturnFormWhenNoRolesMatch() {
+    var key = "multi-role-form";
+    var roles = new String[]{"ROLE_ONE", "ROLE_TWO"};
+    var noMatchRoles = new String[]{"ROLE_THREE", "ROLE_FOUR"};
+    when(repository.findByIdAndRolesIn(key, noMatchRoles)).thenReturn(Optional.empty());
+    
+    assertThrows(FormSchemaDataException.class, 
+        () -> formSchemaProviderService.getFormByKeyAndRoles(key, noMatchRoles));
+    
+    verify(repository).findByIdAndRolesIn(key, noMatchRoles);
+    verify(repository, never()).findByIdAndRolesIn(key, roles);
+  }
+
 }
