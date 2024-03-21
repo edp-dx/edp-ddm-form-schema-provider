@@ -21,6 +21,9 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -30,4 +33,14 @@ public class FormSchema {
   @Id
   private String id;
   private String formData;
+  @Indexed
+  private FormType formType;
+  @Indexed
+  private boolean showOnUI;
+  private List<String> roles;
+
+  public enum FormType {
+    FORM,
+    CARD
+  }
 }
